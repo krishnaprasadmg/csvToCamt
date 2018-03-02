@@ -1,0 +1,15 @@
+camt:
+    company: "Company Name"
+    iban: "DE00000000000000000000"
+    bic: "DEUTXXXXXXX"
+
+    sepa: "SEPA"
+    CamtPmtInfId: "57KK"
+    CamtPmtMtd: "TRF"
+    CamtChrgBr: "SLEV"
+    CamtRef: "Beitragsnachweis"
+    CamtEndToEnd: "NEGINT/0000"
+    CamtCd: "PAYR"
+
+iban:
+    cachePath: "./iban"
