@@ -7,16 +7,14 @@ import (
 	"time"
 
 	"github.com/beevik/etree"
-	"github.com/spf13/viper"
 )
 
 type CamtDocument struct {
-	config           *viper.Viper
 	camtDoc          *etree.Document
 	cstmrCdtTrfInitn *etree.Element
 }
 
-func NewCamtDocument(config *viper.Viper) *CamtDocument {
+func NewCamtDocument() *CamtDocument {
 	camtDoc := etree.NewDocument()
 	document := camtDoc.CreateElement("Document")
 	document.CreateAttr("xmlns", "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03")
@@ -25,7 +23,7 @@ func NewCamtDocument(config *viper.Viper) *CamtDocument {
 
 	cstmrCdtTrfInitn := document.CreateElement("CstmrCdtTrfInitn")
 
-	return &CamtDocument{config, camtDoc, cstmrCdtTrfInitn}
+	return &CamtDocument{camtDoc, cstmrCdtTrfInitn}
 }
 
 func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
@@ -47,15 +45,15 @@ func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
 
 	InitgPty := GrpHdr.CreateElement("InitgPty")
 	Nm := InitgPty.CreateElement("Nm")
-	Nm.CreateCharData(c.config.GetString("camt.company"))
+	Nm.CreateCharData(config.GetString("camt.company"))
 
 	PmtInf := c.cstmrCdtTrfInitn.CreateElement("PmtInf")
 
 	PmtInfId := PmtInf.CreateElement("PmtInfId")
-	PmtInfId.CreateCharData(c.config.GetString("camt.CamtPmtInfId"))
+	PmtInfId.CreateCharData(config.GetString("camt.CamtPmtInfId"))
 
 	PmtMtd := PmtInf.CreateElement("PmtMtd")
-	PmtMtd.CreateCharData(c.config.GetString("camt.CamtPmtMtd"))
+	PmtMtd.CreateCharData(config.GetString("camt.CamtPmtMtd"))
 
 	PmtInf.AddChild(NbOfTxs.Copy())
 	PmtInf.AddChild(CtrlSum.Copy())
@@ -63,7 +61,7 @@ func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
 	PmtTpInf := PmtInf.CreateElement("PmtTpInf")
 	SvcLvl := PmtTpInf.CreateElement("SvcLvl")
 	Cd := SvcLvl.CreateElement("Cd")
-	Cd.CreateCharData(c.config.GetString("camt.sepa"))
+	Cd.CreateCharData(config.GetString("camt.sepa"))
 
 	ReqdExctnDt := PmtInf.CreateElement("ReqdExctnDt")
 	ReqdExctnDt.CreateCharData(tm.Format("2006-01-02"))
@@ -74,15 +72,15 @@ func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
 	DbtrAcct := PmtInf.CreateElement("DbtrAcct")
 	Id := DbtrAcct.CreateElement("Id")
 	IBAN := Id.CreateElement("IBAN")
-	IBAN.CreateCharData(c.config.GetString("camt.iban"))
+	IBAN.CreateCharData(config.GetString("camt.iban"))
 
 	DbtrAgt := PmtInf.CreateElement("DbtrAgt")
 	FinInstnId := DbtrAgt.CreateElement("FinInstnId")
 	BIC := FinInstnId.CreateElement("BIC")
-	BIC.CreateCharData(c.config.GetString("camt.bic"))
+	BIC.CreateCharData(config.GetString("camt.bic"))
 
 	ChrgBr := PmtInf.CreateElement("ChrgBr")
-	ChrgBr.CreateCharData(c.config.GetString("camt.CamtChrgBr"))
+	ChrgBr.CreateCharData(config.GetString("camt.CamtChrgBr"))
 }
 
 func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transaction) {
@@ -90,7 +88,7 @@ func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transactio
 		CdtTrfTxInf := c.cstmrCdtTrfInitn.CreateElement("CdtTrfTxInf")
 		PmtId := CdtTrfTxInf.CreateElement("PmtId")
 		EndToEndId := PmtId.CreateElement("PmtId")
-		EndToEndId.CreateCharData(c.config.GetString("camt.CamtEndToEnd") + data.endToEnd)
+		EndToEndId.CreateCharData(config.GetString("camt.CamtEndToEnd") + data.endToEnd)
 
 		Amt := c.cstmrCdtTrfInitn.CreateElement("Amt")
 		InstdAmt := Amt.CreateElement("InstdAmt")
@@ -113,11 +111,11 @@ func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transactio
 
 		Purp := c.cstmrCdtTrfInitn.CreateElement("Purp")
 		Cd := Purp.CreateElement("Purp")
-		Cd.CreateCharData(c.config.GetString("camt.CamtCd"))
+		Cd.CreateCharData(config.GetString("camt.CamtCd"))
 
 		RmtInf := c.cstmrCdtTrfInitn.CreateElement("RmtInf")
 		Ustrd := RmtInf.CreateElement("Ustrd")
-		Ustrd.CreateCharData(c.config.GetString("camt.CamtRef"))
+		Ustrd.CreateCharData(config.GetString("camt.CamtRef"))
 	}
 }
 

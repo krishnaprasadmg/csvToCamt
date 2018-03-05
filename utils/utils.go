@@ -6,17 +6,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+var config *viper.Viper
+
 func PanicOnError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func GetConfig(file string) *viper.Viper {
-	config := viper.New()
+func ParseConfigFile(file string) {
+	config = viper.New()
 	config.SetConfigFile(file)
 	config.SetConfigType("yaml")
 	PanicOnError(config.ReadInConfig())
-
-	return config
 }

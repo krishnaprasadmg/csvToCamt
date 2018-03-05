@@ -12,7 +12,6 @@ import (
 )
 
 const (
-	IBANCachePath = "./iban"
 	IBANLookupURL = "https://openiban.com/validate/%s?getBIC=true"
 )
 
@@ -36,12 +35,14 @@ func Lookup(ibans ...string) map[string]IBAN {
 	var ibanData = make(map[string]IBAN)
 	var body []byte
 
-	if _, err := os.Stat(IBANCachePath); os.IsNotExist(err) {
-		os.Mkdir(IBANCachePath, os.ModePerm)
+	cacheDirPath := config.GetString("iban.cachePath")
+
+	if _, err := os.Stat(cacheDirPath); os.IsNotExist(err) {
+		os.Mkdir(cacheDirPath, os.ModePerm)
 	}
 
 	for _, iban := range ibans {
-		fileName := IBANCachePath + "/" + iban + ".txt"
+		fileName := cacheDirPath + "/" + iban + ".txt"
 
 		if _, err := os.Stat(fileName); os.IsNotExist(err) {
 			res, err := http.Get(fmt.Sprintf(IBANLookupURL, iban))
