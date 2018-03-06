@@ -16,10 +16,11 @@ type CamtDocument struct {
 
 func NewCamtDocument() *CamtDocument {
 	camtDoc := etree.NewDocument()
+	camtDoc.CreateProcInst("xml", `version="1.0" encoding="UTF-8"`)
 	document := camtDoc.CreateElement("Document")
 	document.CreateAttr("xmlns", "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03")
 	document.CreateAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-	document.CreateAttr("xsi:schemaLocation", "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03 pain.001.001.03.xsd")
+	document.CreateAttr("xsi:schemaLocation", "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03 pain.001.001.03_GBIC_2.xsd")
 
 	cstmrCdtTrfInitn := document.CreateElement("CstmrCdtTrfInitn")
 
@@ -85,7 +86,7 @@ func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
 
 func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transaction) {
 	for _, data := range transactionData {
-		CdtTrfTxInf := c.cstmrCdtTrfInitn.CreateElement("CdtTrfTxInf")
+		CdtTrfTxInf := c.cstmrCdtTrfInitn.FindElement("PmtInf").CreateElement("CdtTrfTxInf")
 		PmtId := CdtTrfTxInf.CreateElement("PmtId")
 		EndToEndId := PmtId.CreateElement("PmtId")
 		EndToEndId.CreateCharData(config.GetString("camt.CamtEndToEnd") + data.endToEnd)
