@@ -35,7 +35,7 @@ func LoadInvestors(files []string) []Investor {
 
 			if err == io.EOF {
 				break
-			} else {
+			} else if err != nil {
 				PanicOnError(err)
 			}
 
