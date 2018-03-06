@@ -7,7 +7,7 @@ camt:
     CamtPmtInfId: "57KK"
     CamtPmtMtd: "TRF"
     CamtChrgBr: "SLEV"
-    CamtRef: "Beitragsnachweis"
+    CamtRef: "Negativzinsen Rueckzahlung"
     CamtEndToEnd: "NEGINT/0000"
     CamtCd: "PAYR"
 

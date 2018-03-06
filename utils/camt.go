@@ -67,7 +67,7 @@ func (c *CamtDocument) AddHeaders(totalAmount float64, nOfTxs int) {
 	ReqdExctnDt.CreateCharData(tm.Format("2006-01-02"))
 
 	Dbtr := PmtInf.CreateElement("Dbtr")
-	Dbtr.AddChild(Nm)
+	Dbtr.AddChild(Nm.Copy())
 
 	DbtrAcct := PmtInf.CreateElement("DbtrAcct")
 	Id := DbtrAcct.CreateElement("Id")
@@ -90,30 +90,30 @@ func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transactio
 		EndToEndId := PmtId.CreateElement("PmtId")
 		EndToEndId.CreateCharData(config.GetString("camt.CamtEndToEnd") + data.endToEnd)
 
-		Amt := c.cstmrCdtTrfInitn.CreateElement("Amt")
+		Amt := CdtTrfTxInf.CreateElement("Amt")
 		InstdAmt := Amt.CreateElement("InstdAmt")
 		InstdAmt.CreateAttr("Ccy", "EUR")
 		InstdAmt.CreateCharData(data.amount)
 
-		CdtrAgt := c.cstmrCdtTrfInitn.CreateElement("CdtrAgt")
+		CdtrAgt := CdtTrfTxInf.CreateElement("CdtrAgt")
 		FinInstnId := CdtrAgt.CreateElement("FinInstnId")
 		BIC := FinInstnId.CreateElement("BIC")
 		BIC.CreateCharData(data.bic)
 
-		Cdtr := c.cstmrCdtTrfInitn.CreateElement("Cdtr")
+		Cdtr := CdtTrfTxInf.CreateElement("Cdtr")
 		Nm := Cdtr.CreateElement("Nm")
 		Nm.CreateCharData(data.bankName)
 
-		CdtrAcct := c.cstmrCdtTrfInitn.CreateElement("CdtrAcct")
+		CdtrAcct := CdtTrfTxInf.CreateElement("CdtrAcct")
 		Id := CdtrAcct.CreateElement("Id")
 		IBAN := Id.CreateElement("IBAN")
 		IBAN.CreateCharData(data.iban)
 
-		Purp := c.cstmrCdtTrfInitn.CreateElement("Purp")
+		Purp := CdtTrfTxInf.CreateElement("Purp")
 		Cd := Purp.CreateElement("Purp")
 		Cd.CreateCharData(config.GetString("camt.CamtCd"))
 
-		RmtInf := c.cstmrCdtTrfInitn.CreateElement("RmtInf")
+		RmtInf := CdtTrfTxInf.CreateElement("RmtInf")
 		Ustrd := RmtInf.CreateElement("Ustrd")
 		Ustrd.CreateCharData(config.GetString("camt.CamtRef"))
 	}

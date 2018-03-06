@@ -1,7 +1,7 @@
 # csvToCamt
 Convert CSV correction files to CAMT format
 
-Get binaries from [release page](https://github.com/krishnaprasadmg/csvToCamt/releases/tag/v0.1.1)
+Get binaries from [release page](https://github.com/krishnaprasadmg/csvToCamt/releases/tag/v0.1.2)
 
 # Example
 
