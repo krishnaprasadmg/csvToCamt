@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 
-	"strconv"
+	"github.com/spf13/cast"
 )
 
 type Transaction struct {
@@ -16,8 +16,7 @@ type Transaction struct {
 }
 
 func (t *Transaction) AddToAmount(amount float64) {
-	currentAmount, _ := strconv.ParseFloat(t.amount, 64)
-	t.amount = fmt.Sprintf("%.2f", currentAmount+amount)
+	t.amount = fmt.Sprintf("%.2f", cast.ToFloat64(t.amount)+amount)
 }
 
 func BuildTransactions(investors []Investor) (map[string]*Transaction, float64) {
@@ -36,7 +35,7 @@ func BuildTransactions(investors []Investor) (map[string]*Transaction, float64) 
 				investor.name,
 				investor.iban,
 				"0.0",
-				fmt.Sprintf("%d", i),
+				cast.ToString(i),
 				iban.BankData.Bic,
 				iban.BankData.Name,
 			}
