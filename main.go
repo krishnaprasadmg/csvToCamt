@@ -18,7 +18,9 @@ func init() {
 
 func main() {
 	var configFile string
+	var skipHeader bool
 	flag.StringVar(&configFile, "c", "", "Config file to use, see config.yaml for example")
+	flag.BoolVar(&skipHeader, "s", false, "Skip CSV header lines, off by default")
 	flag.Parse()
 
 	if configFile == "" || len(flag.Args()) == 0 {
@@ -29,7 +31,7 @@ func main() {
 
 	utils.ParseConfigFile(configFile)
 
-	investorData := utils.LoadInvestors(flag.Args())
+	investorData := utils.LoadInvestors(flag.Args(), skipHeader)
 	transactionData, totalAmount := utils.BuildTransactions(investorData)
 
 	camtDoc := utils.NewCamtDocument()

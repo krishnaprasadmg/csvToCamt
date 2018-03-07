@@ -17,7 +17,7 @@ type Investor struct {
 	amount float64
 }
 
-func LoadInvestors(files []string) []Investor {
+func LoadInvestors(files []string, skipHeader bool) []Investor {
 	var amount float64
 	investors := make([]Investor, 0)
 
@@ -26,12 +26,18 @@ func LoadInvestors(files []string) []Investor {
 		PanicOnError(err)
 		defer investorFile.Close()
 
+		line := 0
 		reader := csv.NewReader(investorFile)
 		reader.Comma = ';'
 		reader.FieldsPerRecord = 3
 
 		for {
+			line++
 			record, err := reader.Read()
+
+			if line == 1 && skipHeader {
+				continue
+			}
 
 			if err == io.EOF {
 				break
