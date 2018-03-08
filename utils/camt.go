@@ -88,7 +88,7 @@ func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transactio
 	for _, data := range transactionData {
 		CdtTrfTxInf := c.cstmrCdtTrfInitn.FindElement("PmtInf").CreateElement("CdtTrfTxInf")
 		PmtId := CdtTrfTxInf.CreateElement("PmtId")
-		EndToEndId := PmtId.CreateElement("PmtId")
+		EndToEndId := PmtId.CreateElement("EndToEndId")
 		EndToEndId.CreateCharData(config.GetString("camt.CamtEndToEnd") + data.endToEnd)
 
 		Amt := CdtTrfTxInf.CreateElement("Amt")
@@ -111,7 +111,7 @@ func (c *CamtDocument) AddTransactionData(transactionData map[string]*Transactio
 		IBAN.CreateCharData(data.iban)
 
 		Purp := CdtTrfTxInf.CreateElement("Purp")
-		Cd := Purp.CreateElement("Purp")
+		Cd := Purp.CreateElement("Cd")
 		Cd.CreateCharData(config.GetString("camt.CamtCd"))
 
 		RmtInf := CdtTrfTxInf.CreateElement("RmtInf")
